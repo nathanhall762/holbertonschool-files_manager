@@ -52,6 +52,39 @@ class DBClient {
       return 0;
     }
   }
+
+  async getUserByEmail(email) {
+    try {
+      // Check if the client is connected, and if not, connect to MongoDB
+      if (!this.isAlive()) {
+        await this.client.connect();
+        console.log('Connected to MongoDB');
+      }
+      const db = this.client.db();
+      const collection = db.collection('users');
+      const user = await collection.findOne({ email });
+      return user;
+    } catch (error) {
+      console.error('Error retrieving user by email:', error);
+      return null;
+    }
+  }
+
+  async createUser(newUser) {
+    try {
+      // Check if the client is connected, and if not, connect to MongoDB
+      if (!this.isAlive()) {
+        await this.connect();
+      }
+      const db = this.client.db();
+      const collection = db.collection('users');
+      const result = await collection.insertOne(newUser);
+      return result;
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
+    }
+  }
 }
 
 const dbClient = new DBClient();

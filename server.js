@@ -1,8 +1,12 @@
 // server.js
 const express = require('express');
 const routes = require('./routes');
+const bodyParser = require('body-parser');
 
 const app = express();
+
+// Parse incoming JSON data
+app.use(bodyParser.json());
 
 // Load all routes from the routes/index.js file
 app.use(routes);
