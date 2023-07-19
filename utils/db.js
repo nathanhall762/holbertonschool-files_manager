@@ -10,23 +10,26 @@ class DBClient {
 
     this.client = new MongoClient(url, { useUnifiedTopology: true });
 
+    this.isAlive = false; // Initialize isAlive to false
+
     this.connect();
   }
 
   async connect() {
     try {
       await this.client.connect();
+      this.isAlive = true; // Update isAlive to true after successful connection
       console.log('Connected to MongoDB');
     } catch (error) {
       console.error('MongoDB connection error:', error);
     }
   }
 
-  isAlive() {
-    return this.client.isConnected();
-  }
-
   async nbUsers() {
+    if (!this.isAlive) {
+      throw new Error('Database connection is not alive.');
+    }
+
     const db = this.client.db();
     const collection = db.collection('users');
     const count = await collection.countDocuments();
@@ -34,6 +37,10 @@ class DBClient {
   }
 
   async nbFiles() {
+    if (!this.isAlive) {
+      throw new Error('Database connection is not alive.');
+    }
+
     const db = this.client.db();
     const collection = db.collection('files');
     const count = await collection.countDocuments();
@@ -43,4 +50,4 @@ class DBClient {
 
 const dbClient = new DBClient();
 
-module.exports = dbClient;
+module.exports = { dbClient };
