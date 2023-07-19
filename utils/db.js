@@ -1,10 +1,10 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient } = require('mongodb');
 
 class DBClient {
   constructor() {
-    const host = process.env.DB_HOST || "localhost";
+    const host = process.env.DB_HOST || 'localhost';
     const port = process.env.DB_PORT || 27017;
-    const database = process.env.DB_DATABASE || "files_manager";
+    const database = process.env.DB_DATABASE || 'files_manager';
     const url = `mongodb://${host}:${port}/${database}`;
 
     this.client = new MongoClient(url, { useUnifiedTopology: true });
@@ -23,9 +23,9 @@ class DBClient {
     try {
       await this.client.connect();
       this.isAlive = true; // Update isAlive to true after successful connection
-      console.log("Connected to MongoDB");
+      console.log('Connected to MongoDB');
     } catch (error) {
-      console.error("MongoDB connection error:", error);
+      console.error('MongoDB connection error:', error);
     }
   }
 
@@ -33,7 +33,7 @@ class DBClient {
     try {
       await this.client.connect();
       const db = this.client.db();
-      const usersCollection = db.collection("users");
+      const usersCollection = db.collection('users');
       const numUsers = await usersCollection.countDocuments();
       return numUsers;
     } catch (error) {
@@ -45,7 +45,7 @@ class DBClient {
     try {
       await this.client.connect();
       const db = this.client.db();
-      const filesCollection = db.collection("files");
+      const filesCollection = db.collection('files');
       const numFiles = await filesCollection.countDocuments();
       return numFiles;
     } catch (error) {
