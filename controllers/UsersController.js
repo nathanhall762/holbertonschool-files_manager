@@ -2,40 +2,37 @@
 const crypto = require('crypto');
 const dbClient = require('../utils/db');
 
-class AppController {
-  // Existing methods...
-
-  static async postNew(req, res) {
-    const { email, password } = req.body;
-
-    if (!email) {
+const UsersController = {
+  async postNew(req, res) {
+    // Check if email and password are provided
+    if (!req.body.email) {
       return res.status(400).json({ error: 'Missing email' });
     }
-
-    if (!password) {
+    if (!req.body.password) {
       return res.status(400).json({ error: 'Missing password' });
     }
 
-    const userExists = await dbClient.getUserByEmail(email);
-    if (userExists) {
+    // Check if email already exists
+    const existingUser = await dbClient.users.findOne({ email: req.body.email });
+    if (existingUser) {
       return res.status(400).json({ error: 'Already exist' });
     }
 
-    const hashedPassword = crypto.createHash('sha1').update(password).digest('hex');
-    const newUser = {
-      email,
-      password: hashedPassword,
-    };
+    // Hash password
+    const passwordHash = crypto.createHash('sha1').update(req.body.password).digest('hex');
 
-    try {
-      const result = await dbClient.createUser(newUser);
-      const { _id, email: userEmail } = result.ops[0];
-      return res.status(201).json({ id: _id, email: userEmail });
-    } catch (error) {
-      console.error('Error creating user:', error);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-  }
-}
+    // Save new user to database
+    const newUser = await dbClient.users.insertOne({
+      email: req.body.email,
+      password: passwordHash,
+    });
 
-module.exports = AppController;
+    // Send response
+    return res.status(201).json({
+      email: newUser.ops[0].email,
+      id: newUser.ops[0]._id,
+    });
+  },
+};
+
+module.exports = UsersController;
