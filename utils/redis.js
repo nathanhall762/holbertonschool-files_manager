@@ -27,11 +27,11 @@ class RedisClient {
 
   async set(key, value, duration) {
     return new Promise((resolve, reject) => {
-      this.client.setex(key, value, duration, (error) => {
+      this.client.setex(key, duration, value, (error, result) => {
         if (error) {
           reject(error);
         } else {
-          resolve();
+          resolve(result);
         }
       });
     });
@@ -39,11 +39,11 @@ class RedisClient {
 
   async del(key) {
     return new Promise((resolve, reject) => {
-      this.client.del(key, (error, count) => {
+      this.client.del(key, (error, result) => {
         if (error) {
           reject(error);
         } else {
-          resolve(count > 0);
+          resolve(result);
         }
       });
     });
