@@ -1,4 +1,3 @@
-// controllers/AppController.js
 const crypto = require('crypto');
 const dbClient = require('../utils/db');
 
