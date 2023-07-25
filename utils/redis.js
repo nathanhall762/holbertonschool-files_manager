@@ -10,7 +10,7 @@ class RedisClient {
   }
 
   isAlive() {
-    return this.client.connected; // TODO: Returning false even when connected
+    return this.client.connected;
   }
 
   async get(key) {
