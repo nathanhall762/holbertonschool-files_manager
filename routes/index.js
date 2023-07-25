@@ -35,13 +35,11 @@ router.get('/users/me', UsersController.getMe);
 // Endpoint: GET /files/:id/data
 // router.get('/files/:id/data', FilesController.getFile);
 
-
 // Endpoint: POST /users
 router.post('/users', UsersController.postNew);
 
 // Endpoint: POST /files
 // router.post('/files', FilesController.postUpload);
-
 
 // Endpoint: PUT /files/:id/publish
 // router.put('/files/:id/publish', FilesController.putPublish);

@@ -1,6 +1,6 @@
 // controllers/AppController.js
-const dbClient = require("../utils/db");
-const redisClient = require("../utils/redis");
+const dbClient = require('../utils/db');
+const redisClient = require('../utils/redis');
 
 const AppController = {
   async getStatus(req, res) {
@@ -27,9 +27,9 @@ const AppController = {
 
       return res.status(200).json(stats);
     } catch (error) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
-  }
-}
+  },
+};
 
 module.exports = AppController;
