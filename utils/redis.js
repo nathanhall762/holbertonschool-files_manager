@@ -1,11 +1,12 @@
+// Redis client
+
 const redis = require('redis');
 
 class RedisClient {
   constructor() {
     this.client = redis.createClient();
-
-    this.client.on('error', (error) => {
-      console.error('Redis error:', error);
+    this.client.on('error', (err) => {
+      console.error('Redis Error:', err);
     });
   }
 
@@ -15,9 +16,9 @@ class RedisClient {
 
   async get(key) {
     return new Promise((resolve, reject) => {
-      this.client.get(key, (error, value) => {
-        if (error) {
-          reject(error);
+      this.client.get(key, (err, value) => {
+        if (err) {
+          reject(err);
         } else {
           resolve(value);
         }
@@ -27,9 +28,9 @@ class RedisClient {
 
   async set(key, value, duration) {
     return new Promise((resolve, reject) => {
-      this.client.setex(key, duration, value, (error, result) => {
-        if (error) {
-          reject(error);
+      this.client.setex(key, duration, value, (err, result) => {
+        if (err) {
+          reject(err);
         } else {
           resolve(result);
         }
@@ -39,9 +40,9 @@ class RedisClient {
 
   async del(key) {
     return new Promise((resolve, reject) => {
-      this.client.del(key, (error, result) => {
-        if (error) {
-          reject(error);
+      this.client.del(key, (err, result) => {
+        if (err) {
+          reject(err);
         } else {
           resolve(result);
         }

@@ -1,3 +1,5 @@
+// Defines our Users controller
+
 const crypto = require('crypto');
 const { ObjectId } = require('mongodb');
 const dbClient = require('../utils/db');

@@ -1,4 +1,5 @@
-// controllers/AppController.js
+// Defines the endpoints for our Express server
+
 const dbClient = require('../utils/db');
 const redisClient = require('../utils/redis');
 
@@ -16,19 +17,15 @@ const AppController = {
   },
 
   async getStats(req, res) {
-    try {
-      const usersCount = await dbClient.nbUsers();
-      const filesCount = await dbClient.nbFiles();
+    const numUsers = await dbClient.nbUsers();
+    const numFiles = await dbClient.nbFiles();
 
-      const stats = {
-        users: usersCount,
-        files: filesCount,
-      };
+    const stats = {
+      users: numUsers,
+      files: numFiles,
+    };
 
-      return res.status(200).json(stats);
-    } catch (error) {
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
+    return res.status(200).json(stats);
   },
 };
 
