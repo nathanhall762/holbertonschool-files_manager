@@ -6,7 +6,7 @@ const mongo = require('mongodb');
 const fs = require('fs');
 const Redis = require('../utils/redis');
 const dbClient = require('../utils/db');
-const { fileQueue } = require('../queues'); // Import the Bull queue
+// const { fileQueue } = require('../queues'); // Import the Bull queue
 
 class FilesController {
   static async postUpload(req, res) {
@@ -79,14 +79,14 @@ class FilesController {
           filePath,
         });
 
-        if (type === 'image') {
-          // Add a job to the fileQueue for generating thumbnail
-          await fileQueue.add({
-            userId: key,
-            fileId: newFile.insertedId.toString(),
-            filePath,
-          });
-        }
+        // if (type === 'image') {
+        //   // Add a job to the fileQueue for generating thumbnail
+        //   await fileQueue.add({
+        //     userId: key,
+        //     fileId: newFile.insertedId.toString(),
+        //     filePath,
+        //   });
+        // }
       }
 
       return res.status(201).send({
@@ -252,7 +252,7 @@ class FilesController {
     })();
   }
 
-  static async getFileData(req, res) {
+  static async getFile(req, res) {
     try {
       const { id } = req.params;
       const { size } = req.query;
